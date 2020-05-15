@@ -1,0 +1,6 @@
+
+package interfaces;
+
+public interface IGestionPrestamo {
+    //AQUI VAN LAS DEFINICIONES DE LOS METODOS QUE SE VAN A IMPLEMENTAR EN REPOSITORIOPRESTAMO
+}
