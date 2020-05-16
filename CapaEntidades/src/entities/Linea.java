@@ -5,6 +5,8 @@ public class Linea {
     
     //ATRIBUTOS
     private int cantidad;
+    private double valorTotalLibro;
+    private double subtotal;
     //RELACIONES
     private Prestamo prestamo;
     private Libro libroEnPrestamo;
@@ -20,11 +22,27 @@ public class Linea {
         this.prestamo = prestamo;
         this.libroEnPrestamo = libroEnPrestamo;
     }
+
+    public Linea(int cantidad, double valorTotalLibro, double subtotal, Prestamo prestamo, Libro libroEnPrestamo) {
+        this.cantidad = cantidad;
+        this.valorTotalLibro = valorTotalLibro;
+        this.subtotal = subtotal;
+        this.prestamo = prestamo;
+        this.libroEnPrestamo = libroEnPrestamo;
+    }
     
     //GETTERS
 
     public int getCantidad() {
         return cantidad;
+    }
+
+    public double getValorTotalLibro() {
+        return valorTotalLibro;
+    }
+
+    public double getSubtotal() {
+        return subtotal;
     }
 
     public Prestamo getPrestamo() {
@@ -41,6 +59,14 @@ public class Linea {
         this.cantidad = cantidad;
     }
 
+    public void setValorTotalLibro(double valorTotalLibro) {
+        this.valorTotalLibro = valorTotalLibro;
+    }
+
+    public void setSubtotal(double subtotal) {
+        this.subtotal = subtotal;
+    }
+    
     public void setPrestamo(Prestamo prestamo) {
         this.prestamo = prestamo;
     }
@@ -53,6 +79,6 @@ public class Linea {
 
     @Override
     public String toString() {
-        return "Linea{" + "cantidad=" + cantidad + ", prestamo=" + prestamo + ", libroEnPrestamo=" + libroEnPrestamo + '}';
-    } 
+        return "Linea{" + "cantidad=" + cantidad + ", valorTotalLibro=" + valorTotalLibro + ", subtotal=" + subtotal + ", prestamo=" + prestamo + ", libroEnPrestamo=" + libroEnPrestamo + '}';
+    }
 }

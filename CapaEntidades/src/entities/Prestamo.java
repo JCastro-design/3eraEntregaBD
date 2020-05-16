@@ -27,6 +27,11 @@ public class Prestamo {
         this.pagoMonedas = pagoMonedas;
     }
 
+    public Prestamo(LocalDateTime fecha, int numero) {
+        this.fecha = fecha;
+        this.numero = numero;
+    }
+
     //GETTERS
 
     public LocalDateTime getFecha() {

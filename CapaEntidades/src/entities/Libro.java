@@ -4,6 +4,7 @@ package entities;
 public class Libro {
     
     //ATRIBUTOS
+    private String nombre;
     private String isbn;
     private double precioBase;
     private int unidadesDisponibles;
@@ -16,16 +17,21 @@ public class Libro {
     public Libro() {
     }
 
-    public Libro(String isbn, double precioBase, int unidadesDisponibles, int numeroImagenes, int numeroVideos) {
+    public Libro(String nombre, String isbn, double precioBase, int unidadesDisponibles, int numeroImagenes, int numeroVideos) {
+        this.nombre = nombre;
         this.isbn = isbn;
         this.precioBase = precioBase;
         this.unidadesDisponibles = unidadesDisponibles;
         this.numeroImagenes = numeroImagenes;
         this.numeroVideos = numeroVideos;
     }
-    
+
     //GETTERS
 
+    public String getNombre() {
+        return nombre;
+    }
+    
     public String getIsbn() {
         return isbn;
     }
@@ -48,6 +54,10 @@ public class Libro {
     
     //SETTERS
 
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+    
     public void setIsbn(String isbn) {
         this.isbn = isbn;
     }
@@ -72,6 +82,6 @@ public class Libro {
 
     @Override
     public String toString() {
-        return "Libro{" + "isbn=" + isbn + ", precioBase=" + precioBase + ", unidadesDisponibles=" + unidadesDisponibles + ", numeroImagenes=" + numeroImagenes + ", numeroVideos=" + numeroVideos + '}';
+        return "Libro{" + "nombre=" + nombre + ", isbn=" + isbn + ", precioBase=" + precioBase + ", unidadesDisponibles=" + unidadesDisponibles + ", numeroImagenes=" + numeroImagenes + ", numeroVideos=" + numeroVideos + '}';
     }
 }
