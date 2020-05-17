@@ -8,6 +8,7 @@ import entities.Denominacion;
 import entities.DtoResumen;
 import entities.Libro;
 import entities.Linea;
+import entities.Moneda;
 import entities.Prestamo;
 import interfaces.IFacadeLibreria;
 import java.util.List;
@@ -88,17 +89,84 @@ public class FacadeLibreria implements IFacadeLibreria{
 
     @Override
     public DtoResumen eliminarLinea(Linea linea) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        DtoResumen dto = new DtoResumen();
+        
+        if(verificarLinea(linea))
+        {
+            boolean encontrada = false;
+            for (Linea line : prestamoActual.getLineas()) {
+                if(line.getLibroEnPrestamo().getIsbn().equals(linea.getLibroEnPrestamo().getIsbn()))
+                {
+                    encontrada = true;
+                    prestamoActual.getLineas().remove(prestamoActual.getLineas().indexOf(line));
+                    dto.setTuvoExito(true);
+                }
+            }
+            
+            if(!encontrada)
+            {
+                dto.setMensaje("La linea que llego por parametro no existe en el listado de lineas de este prestamo");
+                dto.setTuvoExito(false);
+            }
+        }
+        else
+        {
+            dto.setMensaje("La linea que llego por parametro es nula");
+            dto.setTuvoExito(false);
+        }
+        dto.setPrestamo(prestamoActual);
+        dto.setTotal(calcularTotalPrestamo());
+        return dto;
     }
 
     @Override
     public DtoResumen introducirMoneda(Denominacion denominacion, int cantidad) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        DtoResumen dto = new DtoResumen();
+        
+        if(validarDenominacion(denominacion))
+        {
+            Moneda moneda = new Moneda(denominacion);
+            
+            for(int i = 0; i < cantidad; i++)
+            {
+                prestamoActual.getPagoMonedas().add(moneda); 
+            }
+            dto.setTuvoExito(true);
+        }
+        else
+        {
+            dto.setMensaje("La denominacion no es valida, porfavor introduzca solo monedas de 500 o 1000");
+            dto.setTuvoExito(false);
+        }
+        
+        dto.setSaldoEnMonedas(contarMonedas());
+        dto.setPrestamo(prestamoActual);
+        dto.setTotal(calcularTotalPrestamo());
+        return dto;
     }
 
     @Override
     public DtoResumen terminarPrestamo() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        DtoResumen dto = new DtoResumen();
+        
+        if(verificarSaldo())
+        {
+            decrementarExistencias();
+            dto.setTuvoExito(true);
+        }
+        else
+        {
+            dto.setMensaje("El saldo en monedas ingresado es insuficiente!\nLe faltan "+(calcularTotalPrestamo()-contarMonedas())+"$ para completar");
+            dto.setTuvoExito(false);
+        }
+        dto.setSaldoEnMonedas(contarMonedas());
+        dto.setPrestamo(prestamoActual);
+        dto.setTotal(calcularTotalPrestamo());
+        dto.setVueltas(calcularVueltas());
+        return dto;
     }
 
     @Override
@@ -109,8 +177,8 @@ public class FacadeLibreria implements IFacadeLibreria{
     //---------------------------------------------------[METODOS PRIVADOS]---------------------------------------------------//
     
     private boolean verificarExistencia(Libro libro)
-    {
-        return catalogo.contains(libro); 
+    {   
+        return catalogo.contains(libro); //corregir 
     }
     
     private boolean verificarDisponibilidad(Libro libro, int cantidad)
@@ -142,5 +210,51 @@ public class FacadeLibreria implements IFacadeLibreria{
            total += calcularSubtotalLinea(line);
        }
        return total;
+    }
+    
+    private boolean verificarLinea(Linea linea)
+    {
+        return linea != null;
+    }
+    
+    private boolean validarDenominacion(Denominacion denominacion)
+    {
+        return (denominacion == Denominacion.QUINIENTOS || denominacion == Denominacion.MIL);
+    }
+    
+    private double contarMonedas()
+    {
+        double totalMonedas = 0;
+        for (Moneda coin : prestamoActual.getPagoMonedas()) {
+            if(coin.getDenominacion() == Denominacion.QUINIENTOS)
+            {
+                totalMonedas += 500;
+            }
+            else if(coin.getDenominacion() == Denominacion.MIL)
+            {
+                totalMonedas += 1000;
+            }
+        }
+        return totalMonedas;
+    }
+    
+    private boolean verificarSaldo()
+    {
+        return contarMonedas() >= calcularTotalPrestamo();
+    }
+    
+    private void decrementarExistencias()
+    {
+        for (Linea line : prestamoActual.getLineas()) {
+            //se decrementa el numero de unidades en el libro asociado a la linea
+            line.getLibroEnPrestamo().setUnidadesDisponibles(line.getLibroEnPrestamo().getUnidadesDisponibles()-line.getCantidad());
+            //se decrementa el numero de unidades en el libro del catalogo
+            catalogo.get(catalogo.indexOf(line.getLibroEnPrestamo())).setUnidadesDisponibles(catalogo.get(catalogo.indexOf(line.getLibroEnPrestamo())).getUnidadesDisponibles()-line.getCantidad()); 
+        }
+    }
+    
+    private double calcularVueltas()
+    {
+        return (contarMonedas()-calcularTotalPrestamo());
     }
 }
