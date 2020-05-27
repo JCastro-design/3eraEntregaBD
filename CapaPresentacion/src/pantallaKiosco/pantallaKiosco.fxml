@@ -1,15 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="511.0" prefWidth="771.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="pantallaKiosco.ControladorEventosLibreria">
+<AnchorPane id="AnchorPane" prefHeight="659.0" prefWidth="771.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pantallaKiosco.ControladorEventosLibreria">
    <children>
-      <Label fx:id="tituloLabel" layoutX="14.0" layoutY="14.0" prefHeight="62.0" prefWidth="388.0" text="KIOSCO DE LIBROS">
+      <Label layoutX="320.0" layoutY="14.0" text="KIOSKO LIBROS">
          <font>
-            <Font name="Papyrus" size="30.0" />
+            <Font size="19.0" />
          </font>
       </Label>
+      <Label layoutX="14.0" layoutY="42.0" text="Generador de nuevo prestamo" />
+      <Label layoutX="14.0" layoutY="124.0" text="Fecha y hora prestamo:" />
+      <Label fx:id="fechaLabel" layoutX="166.0" layoutY="124.0" prefHeight="18.0" prefWidth="162.0" />
+      <Label layoutX="412.0" layoutY="124.0" text="Numero de prestamo:" />
+      <Label fx:id="numeroPrestamoLabel" layoutX="542.0" layoutY="124.0" prefHeight="18.0" prefWidth="146.0" />
+      <Label layoutX="14.0" layoutY="194.0" text="Seleccion de libro" />
+      <Label layoutX="14.0" layoutY="268.0" text="Lineas de prestamo" />
+      <Label layoutX="357.0" layoutY="268.0" text="Total prestamo" />
+      <Label layoutX="494.0" layoutY="267.0" prefHeight="18.0" prefWidth="246.0" />
+      <Label layoutX="14.0" layoutY="517.0" text="Cantidad monedas" />
+      <Label layoutX="352.0" layoutY="517.0" text="Denominacion" />
+      <Label layoutX="14.0" layoutY="565.0" text="Saldo disponible de monedas:" />
+      <Label layoutX="372.0" layoutY="565.0" text="Vueltas:" />
+      <Label fx:id="vueltasLabel" layoutX="450.0" layoutY="565.0" prefHeight="18.0" prefWidth="159.0" />
+      <Button fx:id="terminarPrestamoButton" layoutX="14.0" layoutY="606.0" mnemonicParsing="false" text="Terminar prestamo" />
+      <Button fx:id="generarReporteButton" layoutX="643.0" layoutY="606.0" mnemonicParsing="false" text="Generar reporte" />
+      <Button fx:id="nuevoPrestamoButton" layoutX="14.0" layoutY="70.0" mnemonicParsing="false" onAction="#handleNuevoPrestamo" text="Nuevo prestamo" />
+      <Button fx:id="agregarLineaButton" layoutX="618.0" layoutY="190.0" mnemonicParsing="false" text="Agregar linea" />
+      <ChoiceBox fx:id="seleccionarLibroChoiceBox" layoutX="176.0" layoutY="190.0" prefWidth="150.0" />
+      <TextField fx:id="cantidadLibroTextField" layoutX="411.0" layoutY="190.0" promptText="Cantidad deseada" />
+      <TextField fx:id="cantidadMonedasTextField" layoutX="133.0" layoutY="513.0" />
+      <ChoiceBox fx:id="seleccionarDenominacionChoiceBox" layoutX="450.0" layoutY="513.0" prefWidth="150.0" />
+      <Button fx:id="agregarMonedasButton" layoutX="643.0" layoutY="513.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="123.0" text="Agregar monedas" />
+    <AnchorPane layoutX="16.0" layoutY="294.0" minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="745.0">
+         <children>
+            <ScrollPane prefHeight="200.0" prefWidth="746.0">
+               <content>
+                  <TableView fx:id="tablaTableView" prefHeight="200.0" prefWidth="746.0">
+                    <columns>
+                      <TableColumn fx:id="libroTableColumn" prefWidth="195.20001792907715" text="Libro" />
+                      <TableColumn fx:id="cantidadTableColumn" prefWidth="176.0" text="Cantidad" />
+                      <TableColumn fx:id="precioLibroTableColumn" prefWidth="201.59994506835938" text="Precio" />
+                      <TableColumn fx:id="subTotalTableColumn" prefWidth="175.99993896484375" text="SubTotal" />
+                    </columns>
+                  </TableView>
+               </content>
+            </ScrollPane>
+         </children>
+      </AnchorPane>
+      <Label fx:id="saldoDisponibleLabel" layoutX="193.0" layoutY="565.0" prefHeight="18.0" prefWidth="150.0" />
    </children>
 </AnchorPane>

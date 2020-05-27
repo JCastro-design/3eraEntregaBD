@@ -9,4 +9,6 @@ public interface IGestionPrestamo {
     Prestamo buscarPrestamo(int id);
     Linea crearLinea(Prestamo p,Libro l,int cantidad);
     ArrayList<Linea> buscarLineas();
+    Linea eliminarLinea(String isbn,int prestamoId);
+    void cancelarPrestamo();
 }

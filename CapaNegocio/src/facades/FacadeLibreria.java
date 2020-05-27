@@ -12,37 +12,99 @@ import entities.Moneda;
 import entities.Prestamo;
 import interfaces.IFacadeLibreria;
 import java.util.List;
-import java.time.LocalDateTime;
+import java.time.LocalDateTime; 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.ArrayList;
 
 public class FacadeLibreria implements IFacadeLibreria{
 
     //ATRIBUTOS
     //RELACIONES
-    private List<Libro> catalogo;
-    private List<Prestamo> prestamos;
-    private Prestamo prestamoActual;
-    private RepositorioLibro gestionLibro;
-    private RepositorioPrestamo gestionPrestamo;
+    private List<Libro> catalogo = new ArrayList<>();
+    private List<Prestamo> prestamos = new ArrayList<>();
+    private Prestamo prestamoActual = new Prestamo();
+    private RepositorioLibro gestionLibro = new RepositorioLibro();
+    private RepositorioPrestamo gestionPrestamo = new RepositorioPrestamo();
+
+    //METODOS
+    //CONSTRUCTORES
+    
+    public FacadeLibreria() { try {
+        //DEPRONTO NO SIRVE, VERIFICAR
+        this.catalogo = gestionLibro.cargarLibros();
+        } catch (Exception ex) {
+            Logger.getLogger(FacadeLibreria.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    //GETTERS
+    
+    @Override
+    public List<Libro> getCatalogo() {
+        return catalogo;
+    }
+
+    @Override
+    public List<Prestamo> getPrestamos() {
+        return prestamos;
+    }
+
+    @Override
+    public Prestamo getPrestamoActual() {
+        return prestamoActual;
+    }
+
+    @Override
+    public RepositorioLibro getGestionLibro() {
+        return gestionLibro;
+    }
+
+    @Override
+    public RepositorioPrestamo getGestionPrestamo() {
+        return gestionPrestamo;
+    }
+
+    //SETTERS
+    
+    @Override
+    public void setCatalogo(List<Libro> catalogo) {
+        this.catalogo = catalogo;
+    }
+
+    @Override
+    public void setPrestamos(List<Prestamo> prestamos) {
+        this.prestamos = prestamos;
+    }
+
+    @Override
+    public void setPrestamoActual(Prestamo prestamoActual) {
+        this.prestamoActual = prestamoActual;
+    }
+
+    @Override
+    public void setGestionLibro(RepositorioLibro gestionLibro) {
+        this.gestionLibro = gestionLibro;
+    }
+
+    @Override
+    public void setGestionPrestamo(RepositorioPrestamo gestionPrestamo) {
+        this.gestionPrestamo = gestionPrestamo;
+    }
     
     @Override
     public boolean crearNuevoPrestamo() {
-    /*
-        LocalDateTime fecha = LocalDateTime.now();
-        int numero;
-        
-        if(la consulta que hace el count de todas las tuplas de la tabla prestamo retorna 0)
+    
+        if(!catalogo.isEmpty())
         {
-            numero = 100; //El primer numero de prestamo va a ser 100
+            Prestamo prestamo = gestionPrestamo.crearPrestamo();
+            prestamoActual = prestamo;
+            return prestamo != null;
         }
         else
         {
-            numero = (select max(numero) from prestamo)++; //Cuando ya hallan tuplas en la tabla prestamo -> numero va a ser al numero mas grande que haya + 1(nunca se van a repetir)
+            return false;
         }
-        
-        Prestamo prestamo = new Prestamo(fecha, numero);
-        prestamoActual = prestamo; //Se agrega como prestamo actual, ya que es el ultimo que se hizo
-    */
-    return true; //se retorna agregado
     }
 
     @Override
@@ -69,6 +131,7 @@ public class FacadeLibreria implements IFacadeLibreria{
                 if(!yaEsta) //Si el libro NO esta en otra linea -> Se crea nueva linea
                 {
                     dto.setTuvoExito(crearLinea(libro, cantidad));
+                    gestionPrestamo.crearLinea(prestamoActual, libro, cantidad);
                 }
             }
             else //No hay unidades suficientes
@@ -88,7 +151,7 @@ public class FacadeLibreria implements IFacadeLibreria{
     }
 
     @Override
-    public DtoResumen eliminarLinea(Linea linea) {
+    public DtoResumen eliminarLinea(Linea linea) { //FALTA METODO DE ACCESO A DATOS QUE BORRE UNA LINEA
         
         DtoResumen dto = new DtoResumen();
         

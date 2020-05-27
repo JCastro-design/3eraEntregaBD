@@ -13,6 +13,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import facades.FacadeLibreria;
+import entities.DtoResumen;
+import entities.Libro;
 
 public class ControladorEventosLibreria implements Initializable {
     
@@ -80,11 +83,52 @@ public class ControladorEventosLibreria implements Initializable {
     private TableColumn<Linea, String> precioLibroTableColumn;
     @FXML
     private TableColumn<Linea, String> subTotalTableColumn;
-
+    
+    public ControladorEventosLibreria (){
+        
+    }
+    
+    FacadeLibreria f = new FacadeLibreria();            
+    
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        
     }    
+    
+    //METODOS
+    
+    @FXML
+    private void handleNuevoPrestamo(){
+        System.out.println("HOLA");
+        try {
+           
+           if (f.crearNuevoPrestamo()==true){
+           String date = f.getPrestamoActual().getFecha().toString();
+           int np = f.getPrestamoActual().getNumero();
+           String nPrestamo = String.valueOf(np);
+           fechaLabel.setText(date);
+           numeroPrestamoLabel.setText(nPrestamo);
+           fillListaLibros();
+           
+       }
+        } catch(Exception e){
+            
+        }
+       
+    }
+    
+    private void fillListaLibros(){
+
+        for (Libro lb: f.getCatalogo()){
+            seleccionarLibroChoiceBox.getItems().add(lb.getNombre());
+        }
+    
+    }
+    
+    private void clearTable(){
+        
+    }
     
 }

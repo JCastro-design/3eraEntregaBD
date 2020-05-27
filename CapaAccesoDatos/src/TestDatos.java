@@ -14,5 +14,6 @@ public class TestDatos {
         if(lin != null){
             System.out.println("Exito");
         }
+        rp.cancelarPrestamo();
     }
 }
