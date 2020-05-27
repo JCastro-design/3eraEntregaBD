@@ -1,6 +1,12 @@
 
 package interfaces;
 
+import entities.*;
+import java.util.ArrayList;
+
 public interface IGestionPrestamo {
-    //AQUI VAN LAS DEFINICIONES DE LOS METODOS QUE SE VAN A IMPLEMENTAR EN REPOSITORIOPRESTAMO
+    Prestamo crearPrestamo();
+    Prestamo buscarPrestamo(int id);
+    Linea crearLinea(Prestamo p,Libro l,int cantidad);
+    ArrayList<Linea> buscarLineas();
 }
