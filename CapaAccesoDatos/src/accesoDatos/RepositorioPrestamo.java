@@ -82,13 +82,15 @@ public class RepositorioPrestamo implements IGestionPrestamo{
     }
 
     @Override
-    public ArrayList<Linea> buscarLineas() {
+    public ArrayList<Linea> buscarLineas(int PrestamoId) {
         ArrayList<Linea> lineas = new ArrayList<>();
         try(
                 Connection c = DriverManager.getConnection(ConstantesOrion.THINCONN,ConstantesOrion.USERNAME,ConstantesOrion.PASSWORD);
-                PreparedStatement ps = c.prepareStatement("select * from Linea");
-                ResultSet rs = ps.executeQuery();
+                PreparedStatement ps = c.prepareStatement("select * from Linea where prestamoId = ?");
+                
                 ){
+            ps.setInt(1, PrestamoId);
+            ResultSet rs = ps.executeQuery();
                 Linea l;
                 RepositorioLibro rl = new RepositorioLibro();
                 while(rs.next()){
